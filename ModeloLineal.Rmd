@@ -1,0 +1,46 @@
+---
+title: "ModeloSupervisado"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+#PASO 1 CONECTARSE A LOS DATOS IMPORTAR LIBRERIAS.
+
+```{r}
+library(ggplot2)
+library(lattice)
+library(rpart)
+library(caret)
+#library(e1071)
+
+#conectarse al dataset: 
+datos_tdm <- read.csv('datos_nube_v2.csv',header = TRUE, sep=',')
+head(datos_tdm, 10)
+
+
+```
+#PASO 2 
+#Se limpian los datos, 
+#desplegamos la estructura de nuestro dataset,
+#Conocemos el nombre de cada campo, el tipo de dato y una pequeña muestra para cada atributo.desplegamos esta #información con el comando str()
+
+
+```{r paso2}
+
+par(mfrow = c(1,1))
+str(datos_tdm)  
+plot(VENTAS~RECURSOSENLANUBE, data=datos_tdm)
+abline(lm(VENTAS~RECURSOSENLANUBE, data=datos_tdm), col="red")
+
+## si el resultado de la correlación es cercano a cero no se tiene correlación 
+
+cor.test(~VENTAS+RECURSOSENLANUBE, data=datos_tdm, levels=0.95)
+# mientras mas cercano al numero 1 es mas la correlación que hay
+
+## si el resultado de los datos no son normales, entre más se acerque al 1 si son normales en caso contrario no lo son y no sirve esta técnica de correlación y se debe de evaluar otra tecnica
+shapiro.test(datos_tdm$RECURSOSENLANUBE) ## sin son normales los datos
+shapiro.test(datos_tdm$VENTAS)## sin son normales los datos         
+
+
+```
